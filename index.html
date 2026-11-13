@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Fly Eater</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <div class="grid">
+      <div id="score-container" class="grid-item">
+        Score:
+        <span id="score-counter">0</span>
+      </div>
+      <div id="timer-container" class="grid-item">
+        Time left: 00:<span id="time-counter">00</span>
+      </div>
+
+      <div class="grid-item game-difficulty-container">
+        <label class="game-difficulty-label" for="game-difficulty"
+          >Difficulty:</label
+        >
+        <select id="game-difficulty">
+          <option value="3000">Easy</option>
+          <option value="1500" selected>Regular</option>
+          <option value="750">Difficult</option>
+          <option value="500">Extreme</option>
+        </select>
+      </div>
+      <div id="game-button-container" class="grid-item">
+        <button id="game-button">Start game</button>
+      </div>
+    </div>
+
+    <p id="instructions">
+      How to play:<br />
+      Move the frog using the arrow keys to eat the fly. You can change the
+      speed of the fly by changing the difficulty.
+    </p>
+  </body>
+</html>
