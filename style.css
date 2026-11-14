@@ -19,7 +19,9 @@ body {
 }
 
 .grid {
+  display: -ms-grid;
   display: grid;
+  -ms-grid-rows: (1fr)[2];
   grid-template-rows: repeat(2, 1fr);
   grid-auto-flow: column;
 }
@@ -80,6 +82,7 @@ body {
 #frog {
   width: 100px;
   position: absolute;
+  -webkit-transition: 0.2s;
   transition: 0.2s;
 }
 
