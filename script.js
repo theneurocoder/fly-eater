@@ -165,6 +165,7 @@ function createFly() {
   fly.style.top = flyY + "px";
   fly.style.transform = "rotate(" + flyRotation + "deg)";
 
+  // Remove fly 100ms before the next one is created
   setTimeout(function () {
     fly.remove();
   }, speed - 100);
