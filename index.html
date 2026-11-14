@@ -8,12 +8,17 @@
   </head>
   <body>
     <div class="grid">
-      <div id="score-container" class="grid-item">
-        Score:
-        <span id="score-counter">0</span>
+      <div class="grid-item">
+        <div id="score-container">
+          Score:
+          <span id="score-counter">0</span>
+        </div>
+        <div id="timer-container">
+          Time left: 00:<span id="time-counter">00</span>
+        </div>
       </div>
-      <div id="timer-container" class="grid-item">
-        Time left: 00:<span id="time-counter">00</span>
+      <div class="grid-item">
+        <button id="view-keys-button">Show keys</button>
       </div>
 
       <div class="grid-item game-difficulty-container">
@@ -23,7 +28,7 @@
         <select id="game-difficulty">
           <option value="3000">Easy</option>
           <option value="1500" selected>Regular</option>
-          <option value="750">Difficult</option>
+          <option value="1000">Difficult</option>
           <option value="500">Extreme</option>
         </select>
       </div>
@@ -35,7 +40,59 @@
     <p id="instructions">
       How to play:<br />
       Move the frog to eat the fly using the arrow keys or the W, A, S, and D
-      keys. You can change the speed of the fly by changing the difficulty.
+      keys. For touchscreen devices, click the ‘Show keys’ button to play using
+      on-screen keys. You can change the speed of the fly by changing the
+      difficulty.
     </p>
+    <div id="keys-container">
+      <span id="up-key" class="key">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          x="0px"
+          y="0px"
+          width="22px"
+          height="12.1px"
+          viewBox="0 0 22 12.1"
+        >
+          <path d="M1,11L11,1l10,10H1z" />
+        </svg>
+      </span>
+      <span id="right-key" class="key">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          x="0px"
+          y="0px"
+          width="12.1px"
+          height="22px"
+          viewBox="0 0 12.1 22"
+        >
+          <path d="M1,21l10-10L1,1V21z" />
+        </svg>
+      </span>
+      <span id="down-key" class="key">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          x="0px"
+          y="0px"
+          width="22px"
+          height="12.1px"
+          viewBox="0 0 22 12.1"
+        >
+          <path d="M1,1l10,10L21,1H1z" />
+        </svg>
+      </span>
+      <span id="left-key" class="key">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          x="0px"
+          y="0px"
+          width="12.1px"
+          height="22px"
+          viewBox="0 0 12.1 22"
+        >
+          <path d="M11,21L1,11L11,1V21z" />
+        </svg>
+      </span>
+    </div>
   </body>
 </html>
