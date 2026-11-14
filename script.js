@@ -256,7 +256,6 @@ function checkFlyOverlap() {
 }
 
 // Toggle keys for mobile
-
 let keysDisplayed = false;
 
 viewKeysButton.addEventListener("click", function () {
