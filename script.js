@@ -65,8 +65,11 @@ function startGame() {
   body.append(frog);
 
   // Set beginning frog position
-  frogX = 0;
-  frogY = 300;
+  frogX = window.innerWidth / 2 - frog.getBoundingClientRect().width / 2;
+  frogY = window.innerHeight - 300;
+
+  frog.style.left = frogX + "px";
+  frog.style.top = frogY + "px";
 
   // Create 'yum'
   const yum = document.createElement("span");
@@ -185,16 +188,16 @@ function moveFrog(event) {
 
     const maxFrogX = viewportWidth - frogWidth;
     const maxFrogY = viewportHeight - frogHeight;
-    if (event.key === "ArrowRight") {
+    if (event.key === "ArrowRight" || event.key === "d") {
       frogX += 50;
       frog.style.transform = "rotate(90deg)";
-    } else if (event.key === "ArrowLeft") {
+    } else if (event.key === "ArrowLeft" || event.key === "a") {
       frogX -= 50;
       frog.style.transform = "rotate(-90deg)";
-    } else if (event.key === "ArrowUp") {
+    } else if (event.key === "ArrowUp" || event.key === "w") {
       frogY -= 50;
       frog.style.transform = "rotate(0deg)";
-    } else if (event.key === "ArrowDown") {
+    } else if (event.key === "ArrowDown" || event.key === "s") {
       frogY += 50;
       frog.style.transform = "rotate(180deg)";
     } else {
@@ -203,7 +206,7 @@ function moveFrog(event) {
 
     event.preventDefault();
 
-    // - Clamp the coordinate to its minimum and maximum values
+    // Maximum and minimum values for frog position
     frogX = Math.max(0, Math.min(maxFrogX, frogX));
     frogY = Math.max(0, Math.min(maxFrogY, frogY));
 
