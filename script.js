@@ -189,19 +189,23 @@ function moveFrog(event) {
 
     const maxFrogX = viewportWidth - frogWidth;
     const maxFrogY = viewportHeight - frogHeight;
-    if (event.key === "ArrowRight" || event.key === "d") {
-      frogX += 50;
-      frog.style.transform = "rotate(90deg)";
+
+    // Move frog using arrow keys or W, A, S, D keys
+    if (event.key === "ArrowUp" || event.key === "w") {
+      frogY -= 50;
+      frog.style.transform = "rotate(0deg)";
     } else if (event.key === "ArrowLeft" || event.key === "a") {
       frogX -= 50;
       frog.style.transform = "rotate(-90deg)";
-    } else if (event.key === "ArrowUp" || event.key === "w") {
-      frogY -= 50;
-      frog.style.transform = "rotate(0deg)";
     } else if (event.key === "ArrowDown" || event.key === "s") {
       frogY += 50;
       frog.style.transform = "rotate(180deg)";
+    } else if (event.key === "ArrowRight" || event.key === "d") {
+      frogX += 50;
+      frog.style.transform = "rotate(90deg)";
     } else {
+      
+      // Exit function if any other key is pressed
       return;
     }
 
@@ -227,7 +231,6 @@ function moveFrog(event) {
         frogRect.top < flyRect.bottom &&
         frogRect.bottom > flyRect.top
       ) {
-
         // Increase score
         const score = Number(scoreCounter.textContent);
         scoreCounter.textContent = score + 10;
