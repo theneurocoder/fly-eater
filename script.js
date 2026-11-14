@@ -1,28 +1,18 @@
-const body = document.querySelector("body");
+const gameButton = document.getElementById("game-button");
 const scoreCounter = document.getElementById("score-counter");
 const timeCounter = document.getElementById("time-counter");
 const gameDifficulty = document.getElementById("game-difficulty");
-const gameButton = document.getElementById("game-button");
 const instructions = document.getElementById("instructions");
-
-const viewKeysButton = document.getElementById("view-keys-button");
-const keysContainer = document.getElementById("keys-container");
-
-const upKey = document.getElementById("up-key");
-const rightKey = document.getElementById("right-key");
-const downKey = document.getElementById("down-key");
-const leftKey = document.getElementById("left-key");
+const body = document.querySelector("body");
 
 // Initialize game variables
 let gameStarted = false;
-let speed = 1500;
+let speed = 1000;
 let game;
 let timer;
 let frog;
 let frogX;
 let frogY;
-let maxFrogX;
-let maxFrogY;
 
 // Update game difficulty when dropdown changes
 gameDifficulty.addEventListener("change", function () {
@@ -183,223 +173,71 @@ function createFly() {
 // Function to move frog
 function moveFrog(event) {
   const frog = document.getElementById("frog");
+  const yum = document.getElementById("yum");
 
-  // Maximum allowable coordinates for frog position
+  // Maximum allowable coordinates for frog position:
+  // Limit it to viewport width minus frog width and viewport height minus frog height
+  // to prevent frog from going out the edge
   const viewportWidth = window.innerWidth;
   const viewportHeight = window.innerHeight;
 
+  // Move frog
   if (frog) {
     const frogWidth = frog.getBoundingClientRect().width;
     const frogHeight = frog.getBoundingClientRect().height;
 
-    maxFrogX = viewportWidth - frogWidth;
-    maxFrogY = viewportHeight - frogHeight;
-
-    if (event.key === "ArrowUp" || event.key === "w") {
-      frogY -= 50;
-      frog.style.transform = "rotate(0deg)";
-    } else if (event.key === "ArrowRight" || event.key === "d") {
+    const maxFrogX = viewportWidth - frogWidth;
+    const maxFrogY = viewportHeight - frogHeight;
+    if (event.key === "ArrowRight" || event.key === "d") {
       frogX += 50;
       frog.style.transform = "rotate(90deg)";
-    } else if (event.key === "ArrowDown" || event.key === "s") {
-      frogY += 50;
-      frog.style.transform = "rotate(180deg)";
     } else if (event.key === "ArrowLeft" || event.key === "a") {
       frogX -= 50;
       frog.style.transform = "rotate(-90deg)";
+    } else if (event.key === "ArrowUp" || event.key === "w") {
+      frogY -= 50;
+      frog.style.transform = "rotate(0deg)";
+    } else if (event.key === "ArrowDown" || event.key === "s") {
+      frogY += 50;
+      frog.style.transform = "rotate(180deg)";
     } else {
       return;
     }
 
     event.preventDefault();
 
-    // Minimum and maximum values for frog position
+    // Maximum and minimum values for frog position
     frogX = Math.max(0, Math.min(maxFrogX, frogX));
     frogY = Math.max(0, Math.min(maxFrogY, frogY));
 
     frog.style.left = frogX + "px";
     frog.style.top = frogY + "px";
 
-    // Detect overlap with fly
-    checkFlyOverlap();
-  }
-}
+    const fly = document.getElementById("fly");
 
-// Function to check if frog overlaps with fly
-function checkFlyOverlap() {
-  const fly = document.getElementById("fly");
-  const frog = document.getElementById("frog");
-  const yum = document.getElementById("yum");
+    // Detect if frog overlaps with fly
+    if (fly) {
+      const flyRect = fly.getBoundingClientRect();
+      const frogRect = frog.getBoundingClientRect();
 
-  if (fly) {
-    const flyRect = fly.getBoundingClientRect();
-    const frogRect = frog.getBoundingClientRect();
+      if (
+        frogRect.left < flyRect.right &&
+        frogRect.right > flyRect.left &&
+        frogRect.top < flyRect.bottom &&
+        frogRect.bottom > flyRect.top
+      ) {
+        const score = Number(scoreCounter.textContent);
+        scoreCounter.textContent = score + 10;
+        fly.remove();
 
-    if (
-      frogRect.left < flyRect.right &&
-      frogRect.right > flyRect.left &&
-      frogRect.top < flyRect.bottom &&
-      frogRect.bottom > flyRect.top
-    ) {
-      const score = Number(scoreCounter.textContent);
-      scoreCounter.textContent = score + 10;
-      fly.remove();
+        yum.classList.remove("hidden");
+        yum.style.top = flyRect.top + "px";
+        yum.style.left = flyRect.left + "px";
 
-      yum.classList.remove("hidden");
-      yum.style.top = flyRect.top + "px";
-      yum.style.left = flyRect.left + "px";
-
-      setTimeout(function () {
-        yum.classList.add("hidden");
-      }, 200);
+        setTimeout(function () {
+          yum.classList.add("hidden");
+        }, 200);
+      }
     }
-  }
-}
-
-// Toggle keys for mobile
-let keysDisplayed = false;
-
-viewKeysButton.addEventListener("click", function () {
-  if (!keysDisplayed) {
-    keysDisplayed = true;
-    keysContainer.classList.add("displayed");
-    viewKeysButton.textContent = "Hide keys";
-  } else {
-    keysDisplayed = false;
-    keysContainer.classList.remove("displayed");
-    viewKeysButton.textContent = "Show keys";
-  }
-});
-
-let upKeyHeld = false;
-let righKeyHeld = false;
-let downKeyHeld = false;
-let leftKeyHeld = false;
-
-// Event listener to move up
-upKey.addEventListener("pointerdown", function () {
-  upKeyHeld = true;
-  moveUp();
-});
-
-// Event listener to move right
-rightKey.addEventListener("pointerdown", function () {
-  rightKeyHeld = true;
-  moveRight();
-});
-
-// Event listener to move down
-downKey.addEventListener("pointerdown", function () {
-  downKeyHeld = true;
-  moveDown();
-});
-
-// Event listener to move left
-leftKey.addEventListener("pointerdown", function () {
-  leftKeyHeld = true;
-  moveLeft();
-});
-
-// Event listener to stop moving when pointer is up
-body.addEventListener("pointerup", function () {
-  upKeyHeld = false;
-  rightKeyHeld = false;
-  downKeyHeld = false;
-  leftKeyHeld = false;
-});
-
-// Function to move up between upKey pointerdown and pointerup
-function moveUp() {
-  if (frog && upKeyHeld) {
-    frogY -= 5;
-    frog.style.top = frogY + "px";
-    frog.style.transform = "rotate(0deg)";
-
-    // Minimum and maximum values for frog position
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
-    const frogWidth = frog.getBoundingClientRect().width;
-    const frogHeight = frog.getBoundingClientRect().height;
-    maxFrogX = viewportWidth - frogWidth;
-    maxFrogY = viewportHeight - frogHeight;
-    frogX = Math.max(0, Math.min(maxFrogX, frogX));
-    frogY = Math.max(0, Math.min(maxFrogY, frogY));
-
-    // Check if frog overlaps with fly
-    checkFlyOverlap();
-
-    requestAnimationFrame(moveUp);
-  }
-}
-
-// Function to move right between rightKey pointerdown and pointerup
-function moveRight() {
-  if (frog && rightKeyHeld) {
-    frogX += 5;
-    frog.style.left = frogX + "px";
-    frog.style.transform = "rotate(90deg)";
-
-    // Minimum and maximum values for frog position
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
-    const frogWidth = frog.getBoundingClientRect().width;
-    const frogHeight = frog.getBoundingClientRect().height;
-    maxFrogX = viewportWidth - frogWidth;
-    maxFrogY = viewportHeight - frogHeight;
-    frogX = Math.max(0, Math.min(maxFrogX, frogX));
-    frogY = Math.max(0, Math.min(maxFrogY, frogY));
-
-    // Check if frog overlaps with fly
-    checkFlyOverlap();
-
-    requestAnimationFrame(moveRight);
-  }
-}
-
-// Function to move down between downKey pointerdown and pointerup
-function moveDown() {
-  if (frog && downKeyHeld) {
-    frogY += 5;
-    frog.style.top = frogY + "px";
-    frog.style.transform = "rotate(180deg)";
-
-    // Minimum and maximum values for frog position
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
-    const frogWidth = frog.getBoundingClientRect().width;
-    const frogHeight = frog.getBoundingClientRect().height;
-    maxFrogX = viewportWidth - frogWidth;
-    maxFrogY = viewportHeight - frogHeight;
-    frogX = Math.max(0, Math.min(maxFrogX, frogX));
-    frogY = Math.max(0, Math.min(maxFrogY, frogY));
-
-    // Check if frog overlaps with fly
-    checkFlyOverlap();
-
-    requestAnimationFrame(moveDown);
-  }
-}
-
-// Function to move left between leftKey pointerdown and pointerup
-function moveLeft() {
-  if (frog && leftKeyHeld) {
-    frogX -= 5;
-    frog.style.left = frogX + "px";
-    frog.style.transform = "rotate(-90deg)";
-
-    // Minimum and maximum values for frog position
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
-    const frogWidth = frog.getBoundingClientRect().width;
-    const frogHeight = frog.getBoundingClientRect().height;
-    maxFrogX = viewportWidth - frogWidth;
-    maxFrogY = viewportHeight - frogHeight;
-    frogX = Math.max(0, Math.min(maxFrogX, frogX));
-    frogY = Math.max(0, Math.min(maxFrogY, frogY));
-
-    // Check if frog overlaps with fly
-    checkFlyOverlap();
-
-    requestAnimationFrame(moveLeft);
   }
 }
