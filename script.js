@@ -179,6 +179,7 @@ function createFly() {
     fly.remove();
   }, speed - 100);
 }
+
 // Function to move frog
 function moveFrog(event) {
   const frog = document.getElementById("frog");
