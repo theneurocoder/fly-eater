@@ -28,7 +28,7 @@ gameButton.addEventListener("click", function () {
   }
 });
 
-// Move frog when on keydown
+// Move frog on keydown
 document.addEventListener("keydown", moveFrog);
 
 // Function to start game
@@ -78,7 +78,7 @@ function startGame() {
   yum.classList.add("hidden");
   body.append(yum);
 
-  // Initialize count down timer
+  // Initialize time counter
   timeCounter.textContent = 59;
 
   // Create initial fly
@@ -111,7 +111,7 @@ function endGame() {
   // Remove frog when game is over
   frog.remove();
 
-  // Remove 'yum' when game is over (this is necessary to prevent duplicates of the same ID)
+  // Remove 'yum' when game is over (this is necessary to prevent duplicates of elements with #yum)
   yum.remove();
 
   // Remove fly when game is over
@@ -206,7 +206,7 @@ function moveFrog(event) {
 
     event.preventDefault();
 
-    // Maximum and minimum values for frog position
+    // Minimum and maximum values for frog position
     frogX = Math.max(0, Math.min(maxFrogX, frogX));
     frogY = Math.max(0, Math.min(maxFrogY, frogY));
 
@@ -226,14 +226,20 @@ function moveFrog(event) {
         frogRect.top < flyRect.bottom &&
         frogRect.bottom > flyRect.top
       ) {
+
+        // Increase score
         const score = Number(scoreCounter.textContent);
         scoreCounter.textContent = score + 10;
+
+        // Eat fly
         fly.remove();
 
+        // Display 'yum'
         yum.classList.remove("hidden");
         yum.style.top = flyRect.top + "px";
         yum.style.left = flyRect.left + "px";
 
+        // Hide 'yum' after 200ms
         setTimeout(function () {
           yum.classList.add("hidden");
         }, 200);
