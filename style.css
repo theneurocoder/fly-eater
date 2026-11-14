@@ -16,6 +16,10 @@ body {
   background-color: #262526;
   color: #fff;
   text-align: center;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .grid {
@@ -182,10 +186,6 @@ body {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   place-items: center;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  -webkit-user-select: none;
 }
 
 #up-key {
